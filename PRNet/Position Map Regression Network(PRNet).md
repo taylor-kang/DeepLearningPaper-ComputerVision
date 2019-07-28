@@ -2,7 +2,7 @@
 
 author: Yao Feng / ECCV 2018
 
-# Abstract
+## Abstract
 
 이 논문의 키워드는 2가지입니다. 
 
@@ -14,15 +14,15 @@ author: Yao Feng / ECCV 2018
 
 또한 이 네트워크는 매우 가볍고 한 이미지를 처리하는 데 오직 9.8ms의 시간이 들기 때문에 이전 네트워크들보다 매우 빠릅니다. 다양한 데이터셋에서의 실험결과는 해당 논문의 방법이 reconsturction과 alignment에 있어서 다른 SOTA 방법을 크게 뛰어넘었다고 보여주고 있습니다.
 
-# 1. Introduction
+## 1. Introduction
 
 3D face reconstruction과 face alignment는 컴퓨터 비전에서 매우 기본적이며 서로 관련깊은 주제입니다. face alignment는 2D 기준점들을 찾는 것으로 다른 얼굴 인식과 같은 facial task들을 하기 위한 선행 작업으로 많이 사용되며 3D face reconstruction을 보조하는 방법입니다.
 
-### 어려움
+#### 어려움
 
 하지만 face alignment는 다양한 포즈 종류와 occlusion(숨김 현상)의 어려움이 있습니다. 따라서 이전 작업에서는 3D Morphable Model(3DMM)을 효과적으로 측정하기 위해 CNN을 사용하였고, 하나의 2D 얼굴 이미지로 부터 3D 정보를 생성하기 위해 3D model warping function을 사용하여 dense face alignment와 3D face reconstruction 결과를 얻었습니다. 하지만 이러한 방법은 face model로 부터 생성된 3D space의 한계로 인해 제한 적입니다. 또한 투시 투영(perspective projection) 이나 3D Thin Plate Spline(TPS) 변형과 같은 연산이 필요하여 전체 프로세스의 복잡도를 높였습니다.
 
-### 관련 논문
+#### 관련 논문
 
 // TODO
 
@@ -31,7 +31,7 @@ author: Yao Feng / ECCV 2018
 
 ![](Untitled-ebe7240f-7f73-4b5e-be5d-180cf0d04cf4.png)
 
-### Contribution 요약
+#### Contribution 요약
 
     1. end-to-end 네트워크 중 처음으로 저차원 공간에서의 제한없이 face alignment와 3D face reconstruction을 함께 해결하였습니다.
     2. 3D 얼굴 구조를 직접적으로 예측하고 dense alignment를 위해 UV position map이라는 새로운 표현방법을 개발하였습니다. UV position map은 좌표 정보를 UV space 상에 기록한것으로 각 점이 semantic meaning와 밀접하게 대응하여 3D 얼굴의 좌표를 제공합니다.
@@ -39,13 +39,13 @@ author: Yao Feng / ECCV 2018
     4. 100FPS 이상으로 빠르게 작동되는 light-weighted 프레임워크를 제공하여 2D 이미지로 부터 3D 얼굴 복원과 alignment 결과를 바로 얻을 수 있게 되었습니다.
     5. 이 논문의 방법이 다른 SOTA에 비해 AFLW2000-3D 와 Florence 데이터셋에서의 결과가 3D 얼굴복원, dense face alignment 모두 25% 이상 성능향상 되었습니다.
 
-# 2. Related Works
+## 2. Related Works
 
 // TODO
 
-# 3. Proposed Method
+## 3. Proposed Method
 
-### 3.1. 3D Face Representation
+#### 3.1. 3D Face Representation
 
 **한 장의 2D 이미지로 부터 3D 얼굴 형태와 이에 대응하는 정보(dense correspondence info)를 예측하는 것**이 목표입니다.
 
@@ -72,13 +72,13 @@ x,y,z를 RGB value의 r,g,b에 대응하여 쉽게 표기하였음.
 
 2D 이미지로 부터 직접적으로 완전한 3D structure를 얻는 ene-to-end training을 위해서 굉장히 많은 2D 이미지와 그에 대응하는 3D shape가 필요합니다. 300W-LP는 60K이상의 매우 큰 데이터셋으로 Basel Face Method(BFM)기반의 3DMM parameter로 맞춰져있습니다. 따라서 이 데이터셋을 활용하기 위해서 BFM에 해당하는 UV 좌표를 생성하였습니다. BFM의 꼭지점의 개수는 50K 이상이기 때문에 position map 사이즈에 맞추어 256개를 선택하였고 무시가능한 resample error를 내는 high precision point cloud를 구하였습니다.
 
-### 3.2. Network Architecture and Loss Function
+#### 3.2. Network Architecture and Loss Function
 
 ![](Untitled-67d50a1c-bc7e-4fc2-abab-7648ca81d974.png)
 
 네트워크는 입력 RGB 이미지를 position map 이미지로 바꾸기 때문에 transfer function을 학습하기 위해 encoder-decoder 구조를 사용하였습니다.
 
-### 
+#### 
 
 - **Encoder Part**
 1 conv layer (256x256x3 input image) + 10 res blocks (8x8x512 feature map)
@@ -103,13 +103,13 @@ Ground Truth position map 과 네트워크 output 의 차이
 
     ![](Untitled-60961749-43f3-43a4-823f-345871f2fb31.png)
 
-### 3.3. Training Details
+#### 3.3. Training Details
 
 // TODO
 
-# 4. Experimental Results
+## 4. Experimental Results
 
-### 4.1. Test Dataset
+#### 4.1. Test Dataset
 
 - **AFLW2000-3D** 
 다양한 이미지에서의 3D face alignment를 측정하기 위한 데이터셋으로 AFLW의 앞 2000 이미지를 이용하여 fitted 3DMM parameter와 68개의 3D landmarks에 맞게  annotation을 확장하였습니다.
@@ -121,7 +121,7 @@ AFLW에서 포즈에 따라 1299개의 test images가 요각(yaw angle)에 적�
 53개의 물체를 포함한 3D face 데이터셋으로 structured-light scanning system을 이용하여 얻은 ground truth로 3D mesh 를 제공합니다.
 ***** face reconstruction 측정
 
-### 4.2. 3D Face Alignment
+#### 4.2. 3D Face Alignment
 
 bounding box가 normalization factor로 사용되는 **Normalized Mean Error**(NME)를 평가척도로 사용하였습니다.
 
@@ -141,7 +141,7 @@ bounding box가 normalization factor로 사용되는 **Normalized Mean Error**(N
 
     ![](Untitled-67f3c02e-9d3d-4321-a6cd-d739360c941a.png)
 
-### 4.3. 3D Face Reconstruction
+#### 4.3. 3D Face Reconstruction
 
 - //TODO
 
@@ -151,16 +151,16 @@ bounding box가 normalization factor로 사용되는 **Normalized Mean Error**(N
 
     ![](Untitled-ccd86910-a092-40c8-b07f-ea5ec8a5cf9e.png)
 
-### 4.4. Runtime
+#### 4.4. Runtime
 
 - //TODO
 
     ![](Untitled-d4fdd29d-079a-4b1b-a95a-2c6a0ded282d.png)
 
-### 4.5. Ablation Study
+#### 4.5. Ablation Study
 
 // TODO
 
-# 5. Conclusion
+## 5. Conclusion
 
 //TODO
